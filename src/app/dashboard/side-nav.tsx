@@ -7,7 +7,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const links = [
-    { name: "File Drive", href: "/dashboard/files", icon: FileIcon },
+    { name: "Dashboard", href: "/dashboard/files", icon: FileIcon },
     { name: "Favorite", href: "/dashboard/favorites", icon: StarIcon },
     { name: "Trash", href: "/dashboard/trash", icon: TrashIcon },
 ];

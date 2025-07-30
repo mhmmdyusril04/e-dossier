@@ -35,7 +35,7 @@ export default function DashboardLayout({
                             </Button>
                         </SheetTrigger>
                         <SheetContent side="left" className="flex flex-col p-4">
-                            <h2 className="text-lg font-bold text-primary mb-4 border-b pb-4">File Drive</h2>
+                            <h2 className="text-lg font-bold text-primary mb-4 border-b pb-4">Dashbord</h2>
                             <SideNav />
                         </SheetContent>
                     </Sheet>
