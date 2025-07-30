@@ -116,10 +116,17 @@ export const getFiles = query({
     }
 
     // Main file query (base)
-    files = await ctx.db
-      .query("files")
-      .withIndex("by_orgId", (q) => q.eq("orgId", args.orgId))
-      .collect();
+    if (args.parentId !== undefined) {
+      files = await ctx.db
+        .query("files")
+        .withIndex("by_parentId", (q) => q.eq("parentId", args.parentId))
+        .collect();
+    } else {
+      files = await ctx.db
+        .query("files")
+        .withIndex("by_parentId", (q) => q.eq("parentId", undefined))
+        .collect();
+    }
 
     // Deleted filter
     if (args.deletedOnly) {
