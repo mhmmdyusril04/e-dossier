@@ -16,7 +16,7 @@ export function SideNav() {
     const pathname = usePathname();
 
     return (
-        <nav className="grid items-start text-sm font-medium">
+        <nav className="grid items-start text-sm font-medium gap-1 w-full text-white">
             {links.map((link) => (
                 <Link key={link.name} href={link.href}>
                     <Button
