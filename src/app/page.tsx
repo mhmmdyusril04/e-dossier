@@ -28,7 +28,7 @@ export default function LandingPage() {
             />
 
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-              Sistem
+              Sistem e-dossier
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600">
               Sistem e-Dossier adalah platform digital untuk pengelolaan dokumen secara efisien dan terintegrasi. Nikmati kemudahan akses, keamanan data, dan peningkatan produktivitas dalam satu sistem terpadu.

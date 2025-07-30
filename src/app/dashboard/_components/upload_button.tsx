@@ -17,6 +17,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { useOrganization, useUser } from "@clerk/nextjs";
 import { useMutation } from "convex/react";
@@ -24,13 +25,6 @@ import { api } from "../../../../convex/_generated/api";
 
 import { z } from "zod";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
@@ -38,12 +32,12 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { documentTypeEnum } from "../../../../convex/schema";
+import { useDropzone } from "react-dropzone";
+import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
   title: z.string().min(1).max(200),
-  file: z
-    .custom<FileList>((val) => val instanceof FileList, "Required")
-    .refine((files) => files.length > 0, `Required`),
+  file: z.array(z.instanceof(File)).min(1, "File is required"),
   documentType: z.enum(documentTypeEnum),
 });
 
@@ -61,7 +55,18 @@ export function UploadButton({ parentId }: { parentId?: Id<"files"> }) {
     },
   });
 
-  const fileRef = form.register("file");
+  // Move useDropzone hook here
+  function onDrop(acceptedFiles: File[]) {
+    const dt = new DataTransfer();
+    acceptedFiles.forEach((file) => dt.items.add(file));
+    const FileList = dt.files;
+    form.setValue("file", Array.from(FileList)); // convert FileList to File[]
+  }
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    multiple: false,
+  });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!orgId) return;
@@ -154,19 +159,18 @@ export function UploadButton({ parentId }: { parentId?: Id<"files"> }) {
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
                 name="documentType"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Tipe File</FormLabel>
+                    <FormLabel>Tipe Dokumen</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger className="border border-gray-300 rounded-md px-4 py-2 focus:border-gray-600 focus:ring-2 focus:ring-blue-500">
+                        <SelectTrigger>
                           <SelectValue placeholder="Pilih tipe dokumen yang akan diunggah" />
                         </SelectTrigger>
                       </FormControl>
@@ -182,7 +186,6 @@ export function UploadButton({ parentId }: { parentId?: Id<"files"> }) {
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
                 name="file"
@@ -190,22 +193,24 @@ export function UploadButton({ parentId }: { parentId?: Id<"files"> }) {
                   <FormItem>
                     <FormLabel>File</FormLabel>
                     <FormControl>
-                      <input
-                        type="file"
-                        {...fileRef}
-                        className="
-                            block w-full text-sm text-gray-900
-                            border border-gray-300 rounded-md
-                            cursor-pointer bg-white
-                            file:mr-4
-                            file:rounded-none file:border-0
-                            file:border-r file:border-gray-300
-                            file:bg-transparent
-                            file:px-4 file:py-2
-                            file:text-sm file:font-medium
-                            focus:outline-none focus:ring-2 focus:ring-blue-500
-                        "
-                      />
+                      <div
+                        {...getRootProps()}
+                        className={cn(
+                          "flex items-center justify-center border border-dashed border-gray-400 rounded-md p-6 cursor-pointer bg-white transition",
+                          isDragActive ? "bg-blue-100 border-blue-500" : ""
+                        )}
+                      >
+                        <input {...getInputProps()} />
+                        {form.watch("file")?.[0] ? (
+                          <p className="text-sm text-gray-800">
+                            {form.watch("file")[0].name}
+                          </p>
+                        ) : (
+                          <p className="text-sm text-gray-500 text-center">
+                            Drag & drop file di sini, atau klik untuk memilih
+                          </p>
+                        )}
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
