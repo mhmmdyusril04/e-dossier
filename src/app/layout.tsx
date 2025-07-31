@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Toaster } from "sonner";
 import ConvexClientProvider from "./ConvexClientProvider";
-import { Footer } from "./footer";
 import "./globals.css";
 import { Header } from "./header";
 
@@ -27,7 +26,6 @@ export default function RootLayout({
             <Toaster richColors />
             <Header />
             {children}
-            <Footer />
           </ConvexClientProvider>
         </ClerkProvider>
       </body>

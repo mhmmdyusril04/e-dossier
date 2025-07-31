@@ -1,31 +1,34 @@
 import { Button } from "@/components/ui/button";
-import {
-    SignInButton,
-    SignedOut,
-    UserButton
-} from "@clerk/nextjs";
+import { SignInButton, SignedOut, UserButton } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 
 export function Header() {
-    return (
-        <div className="relative z-10 border-b py-4 px-4">
-            <div className="items-center container mx-auto justify-between flex">
-                <Link href="/" className="flex gap-2 items-center text-xl text-black">
-                    <Image src="/Logo.png" width="50" height="50" alt="file drive logo" />
-                    Sistem E-Dossier
-                </Link>
+  return (
+    <div className="relative z-20 bg-cover bg-center bg-[url('/background.jpg')]">
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
 
-                <div className="flex gap-2">
-                    {/* <OrganizationSwitcher /> */}
-                    <UserButton />
-                    <SignedOut>
-                        <SignInButton>
-                            <Button>Sign In</Button>
-                        </SignInButton>
-                    </SignedOut>
-                </div>
-            </div>
+      <div className="relative container mx-auto flex items-center justify-between px-4 py-4">
+        <Link href="/" className="flex gap-2 items-center text-xl text-white font-bold">
+          <Image src="/Logo.png" width="50" height="50" alt="file drive logo" />
+          SIDONTAR
+        </Link>
+
+        <div className="flex gap-2 items-center">
+          <UserButton />
+          <SignedOut>
+            <SignInButton>
+              <Button
+                variant="secondary"
+                className="bg-white text-black hover:bg-black hover:text-white transition-colors font-bold"
+              >
+                Sign In
+              </Button>
+            </SignInButton>
+          </SignedOut>
         </div>
-    );
+      </div>
+    </div>
+  );
 }
