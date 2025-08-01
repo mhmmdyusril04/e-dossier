@@ -22,11 +22,11 @@ export default function LandingPage() {
         <div className="mx-auto max-w-2xl py-8">
           <div className="text-center text-white">
             <Image
-              src="/logo.jpg"
-              width="200"
-              height="200"
+              src="/logo.png"
+              width="150"
+              height="150"
               alt="file drive logo"
-              className="inline-block mb-8 rounded-2xl shadow-lg"
+              className="inline-block mb-8 rounded-full shadow-lg"
             />
 
             <h1 className="text-4xl font-bold tracking-tight sm:text-6xl drop-shadow-lg">
